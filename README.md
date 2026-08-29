@@ -36,3 +36,4 @@ jobs:
         with:
           name: MyBillingPoints-APK
           path: build-project/**/build/outputs/apk/debug/*.apk
+
