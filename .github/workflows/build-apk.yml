@@ -1,4 +1,4 @@
-name: Build My Billing Points APK
+  name: Build My Billing Points APK
 
 on:
   workflow_dispatch:
