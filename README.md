@@ -26,6 +26,8 @@ jobs:
         run: |
           mkdir -p build-project
           unzip -qo MyBillingPoints_APK_BuildReady.zip -d build-project
+          # Fix KSP plugin version
+          find build-project -type f \( -name "build.gradle.kts" -o -name "build.gradle" \) -exec sed -i 's/2.0.21-1.0.28/2.0.21-1.0.27/g' {} +
 
       - name: Build APK
         working-directory: build-project
@@ -36,4 +38,4 @@ jobs:
         with:
           name: MyBillingPoints-APK
           path: build-project/**/build/outputs/apk/debug/*.apk
-
+          
