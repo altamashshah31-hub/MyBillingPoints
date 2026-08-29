@@ -1,22 +1,38 @@
-# My Billing Points v2
+name: Build My Billing Points APK
 
-Android starter for a Marathi + English electronic-dealer billing app.
+on:
+  workflow_dispatch:
 
-## Implemented in this starter
-- Kotlin + Jetpack Compose
-- Room local database
-- Dashboard monthly totals
-- Multi-product bill entry
-- Product master
-- Bill list + delete
-- Reports screen
-- PIN and Google Drive settings entry points
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-## Still requires production integration
-- Real Google Drive OAuth + AppData backup/restore
-- Secure PIN/biometric implementation
-- Excel/PDF generation
-- Full bill edit screen and product autocomplete
-- Encrypted/versioned cloud backup
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-Open in Android Studio and sync Gradle.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Extract Android project
+        run: |
+          mkdir -p build-project
+          unzip -qo MyBillingPoints_APK_BuildReady.zip -d build-project
+
+      - name: Build APK
+        working-directory: build-project
+        run: gradle assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyBillingPoints-APK
+          path: build-project/**/build/outputs/apk/debug/*.apk
